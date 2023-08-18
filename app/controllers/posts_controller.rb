@@ -22,7 +22,8 @@ class PostsController < ApplicationController
   end
 
   def pius
-    @pius = Post.joins(:user).select('posts.id', 'posts.message', 'users.email').order(created_at: :desc)
+    @pius = Post.joins(:user).select('posts.id', 'posts.message', 'users.handle', 'users.name',
+                                     'users.image_url','users.verified').order(created_at: :desc)
     render json: @pius
   end
 

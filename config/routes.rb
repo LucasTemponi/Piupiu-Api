@@ -8,13 +8,16 @@ Rails.application.routes.draw do
   post 'signup', to: 'users#create'
   post '/login', to: 'authentication#login'
   get '/pius', to: 'posts#pius'
-  get 'mypius', to: 'posts#my_pius'
+  get '/mypius', to: 'posts#my_pius'
+  get '/users/latest', to: 'users#latest_users'
+  get '/users/:handle', to: 'users#show'
 
   resources :posts do
     member do
       get :delete
     end
   end
+
   # Defines the root path route ("/")
   # root "articles#index"
 end

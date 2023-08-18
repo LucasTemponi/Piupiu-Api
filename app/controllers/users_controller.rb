@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :authorize_request, except: :create
-  before_action :find_user, except: %i[create index]
+  # before_action :find_user, except: %i[create index]
 
   def create
     @user = User.new(user_params)
@@ -12,9 +12,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def latest_users
+    users = User.limit(3).order(created_at: :desc)
+    render json: users
+  end
+
   def show
-    user = User.find(params[:id])
-    render json: user
+    user = User.find_by(handle: params[:handle])
+    data = {
+      user:,
+      posts: user.posts
+    }
+    render json: data
   end
 
   def index
@@ -22,6 +31,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.permit(:email, :password)
+    params.permit(:handle, :password, :name, :image_url)
   end
 end
