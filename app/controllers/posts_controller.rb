@@ -22,9 +22,24 @@ class PostsController < ApplicationController
   end
 
   def pius
-    @pius = Post.joins(:user).select('posts.id', 'posts.message', 'users.handle', 'users.name',
-                                     'users.image_url','users.verified').order(created_at: :desc)
-    render json: @pius
+    @pius = Post.joins(:user).order(created_at: :desc)
+    render json: @pius.map { |piu|
+      @liked_by_current_user = Like.where(user_id: @current_user.id, post_id: piu.id)
+      {
+        id: piu.id,
+        message: piu.message,
+        author: {
+          name: piu.user.name,
+          handle: piu.user.handle,
+          verified: piu.user.verified,
+          image_url: piu.user.image_url
+        },
+        likes: {
+          total: piu.likes.count
+        },
+        liked: @liked_by_current_user.any? || false
+      }
+    }
   end
 
   def my_pius

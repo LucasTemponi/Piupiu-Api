@@ -12,10 +12,12 @@ Rails.application.routes.draw do
   get '/users/latest', to: 'users#latest_users'
   get '/users/:handle', to: 'users#show'
 
+  post 'posts/:id/like', to: 'likes#create'
+  get 'posts/:id/likes', to: 'likes#show'
+  delete 'posts/:id/like', to: 'likes#destroy'
+
   resources :posts do
-    member do
-      get :delete
-    end
+    resources :likes
   end
 
   # Defines the root path route ("/")
