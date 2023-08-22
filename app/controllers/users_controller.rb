@@ -21,7 +21,7 @@ class UsersController < ApplicationController
     user = User.find_by(handle: params[:handle])
     data = {
       user:,
-      posts: user.posts
+      posts: user.posts.order(created_at: :desc)
     }
     render json: data
   end
