@@ -3,6 +3,7 @@ class RepliesController < PostsController
 
   def create
     reply_params = params.require(:reply).permit(:message)
+    @post = Post.find(params[:id])
     reply = Post.create(message: reply_params[:message], main_post_id: @post.id, user_id: @current_user.id)
     if reply.save
       render json: reply
