@@ -99,4 +99,4 @@ test:
 #
 production:
   <<: *default
-  database: piu_piu_postgresql_production
+  database: piupiu_db
