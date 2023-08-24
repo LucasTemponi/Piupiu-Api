@@ -31,6 +31,7 @@ gem 'jbuilder'
 gem 'jwt'
 # Use ActiveModel has_secure_password
 gem 'bcrypt'
+gem 'dotenv-rails', '~> 2.8.1'
 gem 'rack-cors', '~> 0.4.0'
 
 # Use Redis adapter to run Action Cable in production
