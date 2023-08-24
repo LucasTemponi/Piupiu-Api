@@ -18,12 +18,29 @@ class UsersController < ApplicationController
   end
 
   def show
-    user = User.find_by(handle: params[:handle])
+    user = User.select('users.name, users.handle,users.id,users.image_url').find_by(handle: params[:handle])
+    # current_user_likes = get_current_user_likes(user.posts)
+    # user.merge!(posts: user.posts.count)
     data = {
-      user:,
-      posts: user.posts.order(created_at: :desc)
+      user:
     }
+    data.merge!(posts: user.posts.count)
     render json: data
+  end
+
+  def user_posts
+    user = User.find_by(handle: params[:handle])
+    posts = user.posts.order(created_at: :desc).map { |reply| reply.create_post_return_structure(@current_user) }
+    render json: posts
+  end
+
+  def user_likes
+    user = User.find_by(handle: params[:handle])
+    posts = Post.where(user_id: user.id, id: user.likes.pluck(:post_id)).order(created_at: :desc).map do |reply|
+      reply.create_post_return_structure(@current_user)
+    end
+    # posts = user.likes.joins(:post).select('posts.*')
+    render json: posts
   end
 
   def index

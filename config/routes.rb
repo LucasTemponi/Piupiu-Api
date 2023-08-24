@@ -11,10 +11,16 @@ Rails.application.routes.draw do
   get '/mypius', to: 'posts#my_pius'
   get '/users/latest', to: 'users#latest_users'
   get '/users/:handle', to: 'users#show'
+  get '/users/:handle/posts', to: 'users#user_posts'
+  get '/users/:handle/likes', to: 'users#user_likes'
 
   post 'posts/:id/like', to: 'likes#create'
   get 'posts/:id/likes', to: 'likes#show'
   delete 'posts/:id/like', to: 'likes#destroy'
+
+  post 'posts/:id/reply', to: 'replies#create'
+  get 'posts/:id/replies', to: 'replies#show'
+  delete 'posts/:id/reply', to: 'replies#destroy'
 
   resources :posts do
     resources :likes
