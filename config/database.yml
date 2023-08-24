@@ -100,5 +100,3 @@ test:
 production:
   <<: *default
   database: piu_piu_postgresql_production
-  username: piu_piu_postgresql
-  password: <%= ENV["TASK_MANAGER_POSTGRESQL_DATABASE_PASSWORD"] %>
