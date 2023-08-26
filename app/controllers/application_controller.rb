@@ -1,8 +1,14 @@
 class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token
+  rescue_from ActionController::UnpermittedParameters, with: :handle_errors
 
   def not_found
     render json: { error: 'not_found' }
+  end
+
+  def handle_errors
+    render json: { "Unpermitted Parameters found": params.to_unsafe_h.except(:controller, :action, :id, :username, :password).keys },
+           status: :unprocessable_entity
   end
 
   def authorize_request

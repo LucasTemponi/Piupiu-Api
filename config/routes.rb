@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   root to: 'posts#index'
   # get '/posts', to: 'posts#index'
@@ -11,6 +13,7 @@ Rails.application.routes.draw do
   get '/mypius', to: 'posts#my_pius'
   get '/users/latest', to: 'users#latest_users'
   get '/users/:handle', to: 'users#show'
+  patch '/users/:handle', to: 'users#update'
   get '/users/:handle/posts', to: 'users#user_posts'
   get '/users/:handle/likes', to: 'users#user_likes'
 
