@@ -10,7 +10,7 @@ class PostsController < ApplicationController
     post_params = params.require(:post).permit(:message)
     @post = @current_user.posts.new(post_params)
     if @post.save
-      render json: @post
+      render json: @post.create_post_return_structure(@current_user)
     else
       render json: @post.errors, status: :unprocessable_entity
     end
