@@ -24,8 +24,25 @@ class PostsController < ApplicationController
 
   def pius
     @pius = Post.where(main_post_id: nil).joins(:user).order(created_at: :desc)
+    page = (params[:page] || 1).to_i
+    per_page = (page_params[:per_page] || 10).to_i
+
+    offset = page * per_page
+    total_pius = @pius.count
+    total_pages = (total_pius / per_page.to_f).ceil
+
+    puts "\n\nTotal pages: ", total_pages
+
+    @pius = @pius.offset(offset).limit(per_page)
     # current_user_likes = get_current_user_likes(@pius)
-    render json: @pius.map { |piu| piu.create_post_return_structure(@current_user) }
+    return_item = {
+      totalPius: total_pius,
+      totalPages: total_pages,
+      currentPage: page,
+      data: @pius.map { |piu| piu.create_post_return_structure(@current_user) }
+    }
+
+    render json: return_item
   end
 
   def my_pius
@@ -42,5 +59,9 @@ class PostsController < ApplicationController
 
   def get_current_user_likes(posts)
     Like.where(user_id: @current_user.id, post_id: posts.ids).pluck(:post_id)
+  end
+
+  def page_params
+    params.permit(:page, :per_page)
   end
 end

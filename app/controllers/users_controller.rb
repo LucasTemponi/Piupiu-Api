@@ -23,7 +23,7 @@ class UsersController < ApplicationController
 
   def latest_users
     users = User.limit(3).order(created_at: :desc)
-    render json: users.map { |user| user.create_return }
+    render json: users.map(&:create_return)
   end
 
   def show
