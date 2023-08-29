@@ -27,7 +27,7 @@ class PostsController < ApplicationController
     page = (params[:page] || 1).to_i
     per_page = (page_params[:per_page] || 10).to_i
 
-    offset = page * per_page
+    offset = (page - 1) * per_page
     total_pius = @pius.count
     total_pages = (total_pius / per_page.to_f).ceil
 
