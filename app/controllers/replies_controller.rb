@@ -2,7 +2,7 @@ class RepliesController < PostsController
   before_action :authorize_request, except: :show
 
   def create
-    reply_params = params.require(:reply).permit(:message)
+    reply_params = params.permit(:message)
     @post = Post.find(params[:id])
     reply = Post.create(message: reply_params[:message], main_post_id: @post.id, user_id: @current_user.id)
     if reply.save
