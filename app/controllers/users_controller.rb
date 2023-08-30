@@ -27,7 +27,8 @@ class UsersController < ApplicationController
   end
 
   def show
-    user = User.select('users.name, users.handle,users.id,users.image_url').find_by(handle: params[:handle])
+    user = User.select('users.name, users.handle,users.id,users.image_url,users.description')
+               .find_by(handle: params[:handle])
     # current_user_likes = get_current_user_likes(user.posts)
     # user.merge!(posts: user.posts.count)
     data = {
