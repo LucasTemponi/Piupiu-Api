@@ -15,7 +15,7 @@ class RepliesController < PostsController
   def show
     @post = Post.find(params[:id])
     total = @post.replies.count
-    replies = @post.replies.map { |reply| reply.create_post_return_structure(@current_user) }
+    replies = @post.replies.order(created_at: :desc).map { |reply| reply.create_post_return_structure(@current_user) }
     render json: { total:, replies: }
   end
 end
