@@ -49,7 +49,7 @@ class UsersController < ApplicationController
 
   def user_likes
     user = User.find_by(handle: params[:handle])
-    posts = Post.where(user_id: user.id, id: user.likes.pluck(:post_id)).order(created_at: :desc).map do |reply|
+    posts = Post.where(id: user.likes.pluck(:post_id)).order(created_at: :desc).map do |reply|
       reply.create_post_return_structure(@current_user)
     end
     # posts = user.likes.joins(:post).select('posts.*')
