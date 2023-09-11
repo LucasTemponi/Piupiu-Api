@@ -26,7 +26,7 @@ class Post < ApplicationRecord
       replies: {
         total: replies.count
       },
-      liked: liked_by_current_user || false
+      liked: liked_by_current_user
     }
   end
   # def create_post_return_structure(current_user_likes)

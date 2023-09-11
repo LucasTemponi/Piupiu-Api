@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authorize_request, except: :show
+  before_action :authorize_request
 
   def new
     @post = Post.new
