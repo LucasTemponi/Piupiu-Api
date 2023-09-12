@@ -26,18 +26,17 @@ class UsersController < ApplicationController
 
   def latest_users
     users = User.limit(3).order(created_at: :desc)
-    render json: users.map(&:create_return)
+    render json: users.map { |user| user.create_return(@current_user) }
   end
 
   def show
     user = User.select('users.name, users.handle,users.id,users.image_url,users.description')
                .find_by(handle: params[:handle])
-    # current_user_likes = get_current_user_likes(user.posts)
-    # user.merge!(posts: user.posts.count)
     data = {
       user:
     }
     data.merge!(posts: user.posts.count)
+    data.merge!(followed: @current_user.following.include?(user))
     render json: data
   end
 

@@ -13,7 +13,11 @@ Rails.application.routes.draw do
   get '/users/:handle/posts', to: 'users#user_posts'
   get '/users/:handle/likes', to: 'users#user_likes'
 
+  post '/users/:handle/stalk', to: 'follows#create'
+  delete '/users/:handle/stalk', to: 'follows#destroy'
+
   post '/posts', to: 'posts#create'
+  get '/pius/stalking', to: 'posts#followed_pius'
   get '/pius', to: 'posts#pius'
   get '/mypius', to: 'posts#my_pius'
 
