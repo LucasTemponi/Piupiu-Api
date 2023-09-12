@@ -8,8 +8,8 @@ class User < ApplicationRecord
 
   has_many :follows, class_name: 'Follow', foreign_key: 'follower_id', dependent: :destroy
   has_many :following, through: :follows, source: :followed_user
-  def create_return(_other_user)
-    is_followed = _other_user.following.include?(self)
+  def create_return(other_user)
+    is_followed = other_user ? other_user.following.include?(self) : false
     {
       name:,
       handle:,
