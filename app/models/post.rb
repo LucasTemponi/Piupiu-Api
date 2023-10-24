@@ -9,8 +9,8 @@ class Post < ApplicationRecord
   #   !!likes.find { |like| like.user_id == user.id }
   # end
 
-  def create_post_return_structure(current_user)
-    liked_by_current_user = current_user ? Like.where(user_id: current_user.id, post_id: id).any? : false
+  def create_post_return_structure(current_user_likes)
+    liked_by_current_user = current_user_likes.include?(id)
     {
       id:,
       message:,

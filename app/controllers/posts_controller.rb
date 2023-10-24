@@ -9,8 +9,9 @@ class PostsController < ApplicationController
     # render json: @current_user
     post_params = params.require(:post).permit(:message)
     @post = @current_user.posts.new(post_params)
+    current_user_likes = get_current_user_likes(@post)
     if @post.save
-      render json: @post.create_post_return_structure(@current_user)
+      render json: @post.create_post_return_structure(current_user_likes)
     else
       render json: @post.errors, status: :unprocessable_entity
     end
@@ -18,8 +19,8 @@ class PostsController < ApplicationController
 
   def show
     @post = Post.find(params[:id])
-    # current_user_likes = get_current_user_likes(@post)
-    render json: @post.create_post_return_structure(@current_user)
+    current_user_likes = Like.where(user_id: @current_user.id, post_id: @post.id).pluck(:post_id)
+    render json: @post.create_post_return_structure(current_user_likes)
   end
 
   def pius
@@ -35,12 +36,12 @@ class PostsController < ApplicationController
     total_pages = (total_pius / per_page.to_f).ceil
 
     @pius = @pius.offset(offset).limit(per_page)
-    # current_user_likes = get_current_user_likes(@pius)
+    current_user_likes = get_current_user_likes(@pius)
     return_item = {
       totalPius: total_pius,
       totalPages: total_pages,
       currentPage: page,
-      data: @pius.map { |piu| piu.create_post_return_structure(@current_user) }
+      data: @pius.map { |piu| piu.create_post_return_structure(current_user_likes) }
     }
 
     render json: return_item
@@ -57,21 +58,21 @@ class PostsController < ApplicationController
     total_pages = (total_pius / per_page.to_f).ceil
 
     @pius = @pius.offset(offset).limit(per_page)
-    # current_user_likes = get_current_user_likes(@pius)
+    current_user_likes = get_current_user_likes(@pius)
     return_item = {
       totalPius: total_pius,
       totalPages: total_pages,
       currentPage: page,
-      data: @pius.map { |piu| piu.create_post_return_structure(@current_user) }
+      data: @pius.map { |piu| piu.create_post_return_structure(current_user_likes) }
     }
 
     render json: return_item
   end
 
   def my_pius
-    # current_user_likes = get_current_user_likes(@post)
+    current_user_likes = get_current_user_likes(@post)
     pius_to_return = @current_user.posts.order(created_at: :desc).map do |piu|
-      piu.create_post_return_structure(@current_user)
+      piu.create_post_return_structure(current_user_likes)
     end
     render json: pius_to_return
   end
